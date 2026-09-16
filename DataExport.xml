@@ -1,15 +1,6 @@
 <xml>
 <data>
 <shipment>
-<trkNbr>877097001399</trkNbr>
-<status>Delivery updated</status>
-<dispEstDelDt>Will be updated soon</dispEstDelDt>
-<dispEstDelTm>Will be updated soon</dispEstDelTm>
-<shprNm>FELIPE GRIFFIN</shprNm>
-<shprCoNm>REDRAVEN</shprCoNm>
-<dispShpDt>9/11/26</dispShpDt>
-</shipment>
-<shipment>
 <trkNbr>877071987002</trkNbr>
 <status>Delivery updated</status>
 <dispEstDelDt>Will be updated soon</dispEstDelDt>
@@ -47,6 +38,15 @@
 </shipment>
 <shipment>
 <trkNbr>877096955732</trkNbr>
+<status>Out for delivery</status>
+<dispEstDelDt>9/16/26</dispEstDelDt>
+<dispEstDelTm>1:30 PM</dispEstDelTm>
+<shprNm>FELIPE GRIFFIN</shprNm>
+<shprCoNm>REDRAVEN</shprCoNm>
+<dispShpDt>9/11/26</dispShpDt>
+</shipment>
+<shipment>
+<trkNbr>877097001399</trkNbr>
 <status>Out for delivery</status>
 <dispEstDelDt>9/16/26</dispEstDelDt>
 <dispEstDelTm>1:30 PM</dispEstDelTm>
@@ -125,6 +125,24 @@
 <shprNm>FELIPE GRIFFIN</shprNm>
 <shprCoNm>REDRAVEN</shprCoNm>
 <dispShpDt>9/11/26</dispShpDt>
+</shipment>
+<shipment>
+<trkNbr>529721746273</trkNbr>
+<status>Delivered</status>
+<dispEstDelDt></dispEstDelDt>
+<dispEstDelTm></dispEstDelTm>
+<shprNm>Ryan Mascio</shprNm>
+<shprCoNm>DEXCOM INC / TECH-WARR REPLACE</shprCoNm>
+<dispShpDt>6/15/26</dispShpDt>
+</shipment>
+<shipment>
+<trkNbr>534034487323</trkNbr>
+<status>Delivered</status>
+<dispEstDelDt></dispEstDelDt>
+<dispEstDelTm></dispEstDelTm>
+<shprNm>Ryan Mascio</shprNm>
+<shprCoNm>DEXCOM INC / TECH-WARR REPLACE</shprCoNm>
+<dispShpDt>7/15/26</dispShpDt>
 </shipment>
 </data>
 </xml>
