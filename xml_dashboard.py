@@ -395,13 +395,17 @@ tbody tr { border-bottom: 1px solid var(--line); cursor: pointer; }
 tbody tr:hover { background: var(--teal-soft); }
 tbody td { padding: 9px 14px; white-space: nowrap; }
 tbody td.id-cell { font-family: var(--mono); }
+tbody td.id-cell a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--line-strong);
+}
+tbody td.id-cell a:hover { color: var(--teal); border-bottom-color: var(--teal); }
 .tag {
   display: inline-block;
   font-size: 12px;
   padding: 2px 9px;
   border-radius: 20px;
-  background: var(--accent-soft);
-  color: var(--accent);
   border: 1px solid transparent;
 }
 .hint { font-size: 12px; color: var(--ink-soft); margin: 10px 2px 0; }
@@ -450,8 +454,12 @@ const preferredCols = [idField, statusField, ...fields].filter((f, i, a) => f &&
 
 let sortField = null, sortDir = 1;
 const activeFilters = {};
+const statusColorMap = {};   // status value -> hex color, shared between chart + table tags
 
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Turn '#1F6F5C' + 'cc' into '#1F6F5Ccc' for an alpha-tinted background/border.
+function hexAlpha(hex, alphaHex) { return hex + alphaHex; }
 
 function buildStats() {
   const el = document.getElementById('stats');
@@ -464,12 +472,16 @@ function buildStats() {
     RECORDS.forEach(r => { const v = r[field] || '—'; counts[v] = (counts[v] || 0) + 1; });
     const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
     const max = entries[0] ? entries[0][1] : 1;
-    const bars = entries.map(([label, count], i) => `
+    const bars = entries.map(([label, count], i) => {
+      const color = PALETTE[i % PALETTE.length];
+      if (field === statusField) statusColorMap[label] = color;
+      return `
       <div class="bar-row">
         <div class="bar-label" title="${esc(label)}">${esc(label)}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(count/max*100).toFixed(0)}%; background:${PALETTE[i % PALETTE.length]}"></div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(count/max*100).toFixed(0)}%; background:${color}"></div></div>
         <div class="bar-count">${count}</div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
     cards.push(`<div class="stat-card chart"><div class="label">${esc(humanize(field))} breakdown</div><div class="bars">${bars}</div></div>`);
   });
 
@@ -539,8 +551,16 @@ function render() {
     const idx = RECORDS.indexOf(r);
     return '<tr data-idx="' + idx + '">' + preferredCols.map(f => {
       const v = r[f] || '—';
-      if (f === statusField) return `<td><span class="tag">${esc(v)}</span></td>`;
-      if (f === idField) return `<td class="id-cell">${esc(v)}</td>`;
+      if (f === statusField) {
+        const color = statusColorMap[v] || '#6B6656';
+        const style = `background:${hexAlpha(color, '1F')}; color:${color}; border-color:${hexAlpha(color, '55')}`;
+        return `<td><span class="tag" style="${style}">${esc(v)}</span></td>`;
+      }
+      if (f === idField) {
+        if (!r[f]) return `<td class="id-cell">—</td>`;
+        const url = 'https://www.google.com/search?q=' + encodeURIComponent(v);
+        return `<td class="id-cell"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${esc(v)}</a></td>`;
+      }
       return `<td>${esc(v)}</td>`;
     }).join('') + '</tr>';
   }).join('');
